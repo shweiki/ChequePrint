@@ -7,17 +7,12 @@
     <template #navbar>
       <div
         class="navbar-content-container"
-        :class="{'expanded-search': shallShowFullSearch}"
+        :class="{ 'expanded-search': shallShowFullSearch }"
       >
         <!-- Left Content: Search -->
         <div class="d-flex align-center">
-          <v-app-bar-nav-icon
-            v-if="$vuetify.breakpoint.mdAndDown"
-          ></v-app-bar-nav-icon>
-          <router-link
-            to="/"
-            class="d-flex align-center text-decoration-none"
-          >
+          <v-app-bar-nav-icon v-if="$vuetify.breakpoint.mdAndDown"></v-app-bar-nav-icon>
+          <router-link to="/" class="d-flex align-center text-decoration-none">
             <v-img
               :src="appLogo"
               max-height="30px"
@@ -33,9 +28,9 @@
         </div>
 
         <!-- Right Content: I18n, Light/Dark, Notification & User Dropdown -->
-        <div class="d-flex align-center ">
-
+        <div class="d-flex align-center">
           <app-bar-i18n></app-bar-i18n>
+          &nbsp; &nbsp; &nbsp; &nbsp;
           <app-bar-theme-switcher></app-bar-theme-switcher>
         </div>
       </div>
@@ -50,13 +45,13 @@
     <!-- Slot: footer -->
     <template #footer>
       <div class="d-flex justify-space-between">
-        <span>COPYRIGHT &copy; {{ new Date().getFullYear() }} Conic-ISV , All rights Reserved</span>
+        <span
+          >COPYRIGHT &copy; {{ new Date().getFullYear() }} Conic-ISV , All rights
+          Reserved</span
+        >
         <div class="d-flex align-center">
           <span>Hand-crafted &amp; Made with</span>
-          <v-icon
-            color="error"
-            class="ms-2"
-          >
+          <v-icon color="error" class="ms-2">
             {{ icons.mdiHeartOutline }}
           </v-icon>
         </div>
@@ -64,27 +59,26 @@
     </template>
 
     <!-- App Content -->
-    <template #v-app-content>
-    </template>
+    <template #v-app-content> </template>
   </layout-content-horizontal-nav>
 </template>
 
 <script>
-import navMenuItems from '@/navigation/horizontal'
-import AppCustomizer from '@core/layouts/components/app-customizer/AppCustomizer.vue'
-import LayoutContentHorizontalNav from '@core/layouts/variants/content/horizontal-nav/LayoutContentHorizontalNav.vue'
+import navMenuItems from "@/navigation/horizontal";
+import AppCustomizer from "@core/layouts/components/app-customizer/AppCustomizer.vue";
+import LayoutContentHorizontalNav from "@core/layouts/variants/content/horizontal-nav/LayoutContentHorizontalNav.vue";
 
 // App Bar Components
-import AppBarUserMenu from '@/components/AppBarUserMenu.vue'
-import AppBarI18n from '@core/layouts/components/app-bar/AppBarI18n.vue'
-import AppBarThemeSwitcher from '@core/layouts/components/app-bar/AppBarThemeSwitcher.vue'
+import AppBarUserMenu from "@/components/AppBarUserMenu.vue";
+import AppBarI18n from "@core/layouts/components/app-bar/AppBarI18n.vue";
+import AppBarThemeSwitcher from "@core/layouts/components/app-bar/AppBarThemeSwitcher.vue";
 
 // Search Data
 
-import { ref, watch } from '@vue/composition-api'
+import { ref, watch } from "@vue/composition-api";
 
-import { mdiHeartOutline } from '@mdi/js'
-import themeConfig from '@themeConfig'
+import { mdiHeartOutline } from "@mdi/js";
+import themeConfig from "@themeConfig";
 
 export default {
   components: {
@@ -98,43 +92,48 @@ export default {
   },
   setup() {
     // Search
-    const appBarSearchQuery = ref('')
-    const shallShowFullSearch = ref(false)
-    const maxItemsInGroup = 5
+    const appBarSearchQuery = ref("");
+    const shallShowFullSearch = ref(false);
+    const maxItemsInGroup = 5;
     const totalItemsInGroup = ref({
       pages: 0,
       files: 0,
       contacts: 0,
-    })
+    });
     watch(appBarSearchQuery, () => {
       totalItemsInGroup.value = {
         pages: 0,
         files: 0,
         contacts: 0,
-      }
-    })
+      };
+    });
 
     const searchFilterFunc = (item, queryText, itemText) => {
-      if (item.header || item.divider) return true
+      if (item.header || item.divider) return true;
 
       const itemGroup = (() => {
-        if (item.to !== undefined) return 'pages'
-        if (item.size !== undefined) return 'files'
-        if (item.email !== undefined) return 'contacts'
+        if (item.to !== undefined) return "pages";
+        if (item.size !== undefined) return "files";
+        if (item.email !== undefined) return "contacts";
 
-        return null
-      })()
+        return null;
+      })();
 
-      const isMatched = itemText.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1
+      const isMatched =
+        itemText.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1;
 
       if (isMatched) {
-        if (itemGroup === 'pages') totalItemsInGroup.value.pages += 1
-        else if (itemGroup === 'files') totalItemsInGroup.value.files += 1
-        else if (itemGroup === 'contacts') totalItemsInGroup.value.contacts += 1
+        if (itemGroup === "pages") totalItemsInGroup.value.pages += 1;
+        else if (itemGroup === "files") totalItemsInGroup.value.files += 1;
+        else if (itemGroup === "contacts") totalItemsInGroup.value.contacts += 1;
       }
 
-      return appBarSearchQuery.value && isMatched && totalItemsInGroup.value[itemGroup] <= maxItemsInGroup
-    }
+      return (
+        appBarSearchQuery.value &&
+        isMatched &&
+        totalItemsInGroup.value[itemGroup] <= maxItemsInGroup
+      );
+    };
 
     return {
       navMenuItems,
@@ -152,9 +151,9 @@ export default {
       icons: {
         mdiHeartOutline,
       },
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

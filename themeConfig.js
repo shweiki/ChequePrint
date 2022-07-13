@@ -2,7 +2,7 @@ import { mdiCheckboxBlankCircleOutline } from '@mdi/js'
 
 const themeConfig = {
   app: {
-    name: 'My  Cheque',
+    name: 'Cheques',
     logo: require('@/assets/images/svg/logo.svg'),
     isDark: false,
     isRtl: false,

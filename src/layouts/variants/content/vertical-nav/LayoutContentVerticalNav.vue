@@ -6,29 +6,30 @@
     <template #navbar="{ isVerticalNavMenuActive, toggleVerticalNavMenuActive }">
       <div
         class="navbar-content-container"
-        :class="{'expanded-search': shallShowFullSearch}"
+        :class="{ 'expanded-search': shallShowFullSearch }"
       >
         <!-- Left Content: Search -->
         <div class="d-flex align-center">
-          <v-icon
-            v-if="$vuetify.breakpoint.mdAndDown"
-            class="me-3"
-            @click="toggleVerticalNavMenuActive"
-          >
-            {{ icons.mdiMenu }}
-          </v-icon>
-          <app-bar-search
-            :shall-show-full-search.sync="shallShowFullSearch"
-            :data="appBarSearchData"
-            :filter="searchFilterFunc"
-            :search-query.sync="appBarSearchQuery"
-            @update:shallShowFullSearch="handleShallShowFullSearchUpdate(isVerticalNavMenuActive, toggleVerticalNavMenuActive)"
-          ></app-bar-search>
+          <router-link to="/" class="d-flex align-center text-decoration-none">
+            <v-img
+              :src="appLogo"
+              max-height="30px"
+              max-width="30px"
+              alt="logo"
+              contain
+              class="me-3"
+            ></v-img>
+            <h2 class="app-title text--primary">
+              {{ appName }}
+            </h2>
+          </router-link>
         </div>
 
         <!-- Right Content: I18n, Light/Dark, Notification & User Dropdown -->
         <div class="d-flex align-center right-row">
-          <app-bar-user-menu></app-bar-user-menu>
+          <app-bar-i18n></app-bar-i18n> &nbsp; &nbsp; &nbsp; &nbsp;
+
+          <app-bar-theme-switcher></app-bar-theme-switcher>
         </div>
       </div>
     </template>
@@ -36,16 +37,15 @@
     <!-- Slot: Footer -->
     <template #footer>
       <div class="d-flex justify-space-between">
-        <span>COPYRIGHT &copy; {{ new Date().getFullYear() }} <a
-          href="https://themeselection.com"
-          class="text-decoration-none"
-        >ThemeSelection</a><span class="d-none d-md-inline">, All rights Reserved</span></span>
+        <span
+          >COPYRIGHT &copy; {{ new Date().getFullYear() }}
+          <a href="https://themeselection.com" class="text-decoration-none"
+            >ThemeSelection</a
+          ><span class="d-none d-md-inline">, All rights Reserved</span></span
+        >
         <div class="align-center d-none d-md-flex">
           <span>Hand-crafted &amp; Made with</span>
-          <v-icon
-            color="error"
-            class="ms-2"
-          >
+          <v-icon color="error" class="ms-2">
             {{ icons.mdiHeartOutline }}
           </v-icon>
         </div>
@@ -55,84 +55,94 @@
 </template>
 
 <script>
-import LayoutContentVerticalNav from '@/@core/layouts/variants/content/vertical-nav/LayoutContentVerticalNav.vue'
-import navMenuItems from '@/navigation/vertical'
+import LayoutContentVerticalNav from "@/@core/layouts/variants/content/vertical-nav/LayoutContentVerticalNav.vue";
+import navMenuItems from "@/navigation/vertical";
 
 // App Bar Components
-import AppBarSearch from '@core/layouts/components/app-bar/AppBarSearch.vue'
-import AppBarUserMenu from '@/components/AppBarUserMenu.vue'
+import AppBarI18n from "@core/layouts/components/app-bar/AppBarI18n.vue";
+import AppBarThemeSwitcher from "@core/layouts/components/app-bar/AppBarThemeSwitcher.vue";
+import { mdiHeartOutline, mdiMenu } from "@mdi/js";
 
-import { mdiMenu, mdiHeartOutline } from '@mdi/js'
-
-import { getVuetify } from '@core/utils'
+import { getVuetify } from "@core/utils";
 
 // Search Data
-import appBarSearchData from '@/assets/app-bar-search-data'
+import appBarSearchData from "@/assets/app-bar-search-data";
 
-import { ref, watch } from '@vue/composition-api'
+import themeConfig from "@themeConfig";
+import { ref, watch } from "@vue/composition-api";
 
 export default {
   components: {
     LayoutContentVerticalNav,
 
     // App Bar Components
-    AppBarSearch,
-    AppBarUserMenu,
+    AppBarI18n,
+    AppBarThemeSwitcher,
   },
   setup() {
-    const $vuetify = getVuetify()
+    const $vuetify = getVuetify();
 
     // Search
-    const appBarSearchQuery = ref('')
-    const shallShowFullSearch = ref(false)
-    const maxItemsInGroup = 5
+    const appBarSearchQuery = ref("");
+    const shallShowFullSearch = ref(false);
+    const maxItemsInGroup = 5;
     const totalItemsInGroup = ref({
       pages: 0,
       files: 0,
       contacts: 0,
-    })
+    });
     watch(appBarSearchQuery, () => {
       totalItemsInGroup.value = {
         pages: 0,
         files: 0,
         contacts: 0,
-      }
-    })
+      };
+    });
 
     // NOTE: Update search function according to your usage
     const searchFilterFunc = (item, queryText, itemText) => {
-      if (item.header || item.divider) return true
+      if (item.header || item.divider) return true;
 
       const itemGroup = (() => {
-        if (item.to !== undefined) return 'pages'
-        if (item.size !== undefined) return 'files'
-        if (item.email !== undefined) return 'contacts'
+        if (item.to !== undefined) return "pages";
+        if (item.size !== undefined) return "files";
+        if (item.email !== undefined) return "contacts";
 
-        return null
-      })()
+        return null;
+      })();
 
-      const isMatched = itemText.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1
+      const isMatched =
+        itemText.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1;
 
       if (isMatched) {
-        if (itemGroup === 'pages') totalItemsInGroup.value.pages += 1
-        else if (itemGroup === 'files') totalItemsInGroup.value.files += 1
-        else if (itemGroup === 'contacts') totalItemsInGroup.value.contacts += 1
+        if (itemGroup === "pages") totalItemsInGroup.value.pages += 1;
+        else if (itemGroup === "files") totalItemsInGroup.value.files += 1;
+        else if (itemGroup === "contacts") totalItemsInGroup.value.contacts += 1;
       }
 
-      return appBarSearchQuery.value && isMatched && totalItemsInGroup.value[itemGroup] <= maxItemsInGroup
-    }
+      return (
+        appBarSearchQuery.value &&
+        isMatched &&
+        totalItemsInGroup.value[itemGroup] <= maxItemsInGroup
+      );
+    };
 
     // ? Handles case where in <lg vertical nav menu is open and search is triggered using hotkey then searchbox is hidden behind vertical nav menu overlaty
-    const handleShallShowFullSearchUpdate = (isVerticalNavMenuActive, toggleVerticalNavMenuActive) => {
+    const handleShallShowFullSearchUpdate = (
+      isVerticalNavMenuActive,
+      toggleVerticalNavMenuActive
+    ) => {
       if ($vuetify.breakpoint.mdAndDown && isVerticalNavMenuActive) {
-        toggleVerticalNavMenuActive()
+        toggleVerticalNavMenuActive();
       }
-    }
+    };
 
     return {
       navMenuItems,
       handleShallShowFullSearchUpdate,
-
+      // App Config
+      appName: themeConfig.app.name,
+      appLogo: themeConfig.app.logo,
       // Search
       appBarSearchQuery,
       shallShowFullSearch,
@@ -143,9 +153,9 @@ export default {
         mdiMenu,
         mdiHeartOutline,
       },
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -161,7 +171,7 @@ export default {
 // ? Handle bg of autocomplete for blured appBar
 .v-app-bar.bg-blur {
   .expanded-search {
-    ::v-deep .app-bar-autocomplete-box div[role='combobox'] {
+    ::v-deep .app-bar-autocomplete-box div[role="combobox"] {
       background-color: transparent;
     }
 

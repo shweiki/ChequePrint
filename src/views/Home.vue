@@ -1,179 +1,232 @@
 <template>
-  <v-row>
-    <v-col cols="3" md="3">
-      <v-card class="mb-6">
-        <v-card-title>From</v-card-title>
-        <v-card-text>
-          <v-form>
-            <v-text-field
-              v-model="name"
-              :prepend-inner-icon="icons.mdiAccountOutline"
-              label="Name"
-              outlined
-              dense
-              placeholder="Name"
-            ></v-text-field>
+  <section id="faq">
+    <v-row>
+      <v-col cols="3" md="3" sm="12" xl="3">
+        <v-card class="mb-6">
+          <v-card-title>{{ $t("Form") }}</v-card-title>
+          <v-card-text>
+            <v-form>
+              <v-text-field
+                v-model="name"
+                :prepend-inner-icon="icons.mdiAccountOutline"
+                :label="$t('Name')"
+                outlined
+                dense
+                :placeholder="$t('Name')"
+              ></v-text-field>
 
-            <v-menu
-              ref="menuref"
-              v-model="menu1"
-              :close-on-content-click="false"
-              transition="scale-transition"
-              offset-y
-              max-width="290px"
-              min-width="auto"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="computedDateFormatted"
-                  label="Date"
-                  hint="DD/MM/YYYY format"
-                  persistent-hint
-                  :prepend-inner-icon="icons.mdiCalendar"
-                  v-bind="attrs"
-                  v-on="on"
-                  readonly
-                  outlined
-                ></v-text-field>
-              </template>
+              <v-menu
+                ref="menuref"
+                v-model="menu1"
+                :close-on-content-click="false"
+                transition="scale-transition"
+                offset-y
+                max-width="290px"
+                min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="computedDateFormatted"
+                    :label="$t('Date')"
+                    :hint="$t('Format') + '  DD/MM/YYYY'"
+                    persistent-hint
+                    :prepend-inner-icon="icons.mdiCalendar"
+                    v-bind="attrs"
+                    v-on="on"
+                    readonly
+                    outlined
+                  ></v-text-field>
+                </template>
 
-              <v-date-picker
-                v-model="date"
-                no-title
-                color="primary"
-                @input="menu1 = false"
-              ></v-date-picker>
-            </v-menu>
+                <v-date-picker
+                  v-model="date"
+                  no-title
+                  color="primary"
+                  @input="menu1 = false"
+                ></v-date-picker>
+              </v-menu>
 
-            <v-text-field
-              v-model="amount"
-              :prepend-inner-icon="icons.mdiCashMultiple"
-              label="Amount"
-              outlined
-              dense
-              type="Amount"
-              placeholder="Amount"
-            ></v-text-field>
+              <v-text-field
+                v-model="amount"
+                :prepend-inner-icon="icons.mdiCashMultiple"
+                :label="$t('Amount')"
+                outlined
+                dense
+                type="Amount"
+                @focus="$event.target.select()"
+                :placeholder="$t('Amount')"
+              ></v-text-field>
 
-            <v-textarea
-              v-model="note"
-              :prepend-inner-icon="icons.mdiCommentOutline"
-              label="Note"
-              rows="1"
-              outlined
-              dense
-              counter
-            ></v-textarea>
+              <v-textarea
+                v-model="note"
+                :prepend-inner-icon="icons.mdiCommentOutline"
+                :label="$t('Note')"
+                rows="1"
+                outlined
+                dense
+                counter
+              ></v-textarea>
 
-            <v-combobox
-              v-model="crossing"
-              :items="['/ /', 'يصرف للمستفيد الأول', 'غير قابل للتداول']"
-              item-text="title"
-              item-value="value"
-              label="Crossing"
-              hide-details
-              outlined
-              dense
-            ></v-combobox> </v-form
-        ></v-card-text> </v-card
-    ></v-col>
-    <v-col cols="9" md="9">
-      <v-card class="mb-6">
-        <v-card-title>
-          <span class="me-3">Layout 🚀</span>
-          <v-spacer></v-spacer>
+              <v-combobox
+                v-model="crossing"
+                :items="['/ /', 'يصرف للمستفيد الأول', 'غير قابل للتداول']"
+                item-text="title"
+                item-value="value"
+                :label="$t('Crossing')"
+                hide-details
+                outlined
+                dense
+              ></v-combobox> </v-form
+          ></v-card-text> </v-card
+      ></v-col>
+      <v-col cols="9" md="9" sm="12" xl="9">
+        <v-card class="mb-6">
+          <v-card-title>
+            <span class="me-3">{{ $t("Layout") }} 🚀</span>
+            <v-spacer></v-spacer>
 
-          <span class="me-3">
-            <v-btn @click="Print" color="primary" block>
-              Print
-              <v-icon right dark>
-                {{ icons.mdiPrinter }}
-              </v-icon></v-btn
-            >
-          </span>
-        </v-card-title>
+            <span class="me-3">
+              <v-btn @click="Print" color="primary" block>
+                {{ $t("Print") }}
+                <v-icon right dark>
+                  {{ icons.mdiPrinter }}
+                </v-icon></v-btn
+              >
+            </span>
+          </v-card-title>
 
-        <v-card-text>
-          <div id="PrintElement" style="color: rgb(0 0 0 / 68%)">
-            <div class="cheque_div" style="width: 16.6cm; height: 8.2cm">
-              <div class="On_Cheque" style="position: absolute">
-                <img
-                  src="https://print.cheque-at.com/img/checks/jor-all.jpg"
-                  alt="Cheque img"
-                  class="On_Cheque"
-                  draggable="false"
-                />
+          <v-card-text>
+            <div id="PrintElement" style="color: rgb(0 0 0 / 68%)">
+              <div class="cheque_div" style="width: 16.6cm; height: 8.2cm">
+                <div class="On_Cheque" style="position: absolute">
+                  <img
+                    id="ChequeImage"
+                    :src="require('@/assets/images/cheques/Jordan.jpg')"
+                    alt="Cheque img"
+                    class="On_Cheque"
+                    draggable="false"
+                  />
 
-                <p class="On_Cheque" style="top: 1.5cm; left: 1.1cm; width: 110px">
-                  {{ computedDateFormatted }}
-                </p>
-                <p class="On_Cheque" style="top: 2.7cm; left: 1.2cm; width: 530px">
-                  {{ name }}
-                </p>
-                <p class="On_Cheque" style="top: 4cm; left: 12.1cm; width: 100px">
-                  #{{ amount > 0 ? parseInt(amount) : "" }}#
-                </p>
-                <p
-                  class="On_Cheque tafk_lbl"
-                  style="
-                    top: 3.1cm;
-                    left: 2.1cm;
-                    width: 305px;
-                    line-height: 25px;
-                    direction: rtl;
-                  "
-                >
-                  فقط {{ nArabicWords(amount) }} لا غير
-                </p>
-                <p
-                  class="On_Cheque"
-                  style="top: 4.2cm; left: 1.2cm; width: 330px; font-size: 17px"
-                >
-                  {{ note }}
-                </p>
-                <p
-                  class="On_Cheque crossing_lbl_horizontal"
-                  draggable="false"
-                  style="display: block"
-                >
-                  {{ crossing }}
-                </p>
+                  <p class="On_Cheque" style="top: 1.5cm; left: 1cm; width: 110px">
+                    {{ computedDateFormatted }}
+                  </p>
+                  <p class="On_Cheque" style="top: 2.7cm; left: 1.2cm; width: 530px">
+                    {{ name }}
+                  </p>
+                  <p class="On_Cheque" style="top: 4cm; left: 12.1cm; width: 100px">
+                    #{{ amount > 0 ? parseInt(amount) : "" }}#
+                  </p>
+                  <p
+                    class="On_Cheque tafk_lbl"
+                    style="
+                      top: 3.1cm;
+                      left: 2.1cm;
+                      width: 305px;
+                      line-height: 25px;
+                      direction: rtl;
+                    "
+                  >
+                    فقط {{ nArabicWords(amount) }} لا غير
+                  </p>
+                  <p
+                    class="On_Cheque"
+                    style="top: 4.2cm; left: 1.2cm; width: 330px; font-size: 17px"
+                  >
+                    {{ note }}
+                  </p>
+                  <p
+                    class="On_Cheque crossing_lbl_horizontal"
+                    draggable="false"
+                    style="display: block"
+                  >
+                    {{ crossing }}
+                  </p>
 
-                <p
-                  class="On_Cheque"
-                  style="top: 4cm; left: 15cm; width: 40px; display: block"
-                >
-                  {{ amount > 0 ? (amount % 1).toFixed(3) * 1000 : "" }}
-                </p>
+                  <p
+                    class="On_Cheque"
+                    style="top: 4cm; left: 15cm; width: 40px; display: block"
+                  >
+                    {{ amount > 0 ? (amount % 1).toFixed(3) * 1000 : "" }}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        </v-card-text>
-      </v-card></v-col
-    >
-    <iframe id="ifrmPrint" style="display: none !important"></iframe>
-  </v-row>
+          </v-card-text>
+        </v-card></v-col
+      >
+      <iframe id="ifrmPrint" style="display: none !important"></iframe>
+    </v-row>
+    <v-card-text class="text-center">
+      <p class="text-xl font-weight-medium text--primary mb-1">
+        {{ $t("You still have a other templete ?") }}
+      </p>
+      <p>
+        {{
+          $t(
+            "If you cannot find a templete in our site, you can always contact us. We will answer to you shortly!"
+          )
+        }}
+      </p>
+    </v-card-text>
+
+    <v-row class="mx-auto">
+      <v-col
+        v-for="(contact, index) in contactDetails"
+        :key="contact.icon"
+        cols="12"
+        sm="6"
+        md="5"
+        :class="index > 0 ? 'me-auto' : 'ms-auto'"
+      >
+        <v-card class="faq-contact text-center pa-5" flat>
+          <v-avatar rounded color="secondary" size="38" class="v-avatar-light-bg mb-6">
+            <a :href="contact.href" target="_blank">
+              <v-icon class="text--primary" size="24">
+                {{ contact.icon }}
+              </v-icon></a
+            >
+          </v-avatar>
+
+          <p class="text-xl text--primary font-weight-medium mb-2">
+            {{ contact.contact }}
+          </p>
+
+          <p class="text-sm mb-0">
+            {{ contact.tagLine }}
+          </p>
+        </v-card>
+      </v-col>
+    </v-row>
+  </section>
 </template>
 <script>
 // eslint-disable-next-line object-curly-newline
 import { nArabicWords } from "@/plugins/nArabicWords.js";
+import Jordan from "@core/report/Template/Jordan/Jordan-All.js";
 import {
   mdiAccountOutline,
   mdiCalendar,
   mdiCashMultiple,
   mdiCommentOutline,
+  mdiEmailOutline,
   mdiPrinter,
+  mdiWhatsapp,
 } from "@mdi/js";
 import { computed, ref } from "@vue/composition-api";
 
 export default {
   setup() {
-    const name = ref("طه اسماعيل محمد الشويكي");
+    const Report = ref({
+      Id: 1,
+      Name: "test",
+      Html: Jordan,
+    });
+    const name = ref("");
     const date = ref(new Date().toISOString().substr(0, 10));
 
-    const amount = ref(1000.252);
-    const note = ref("تسديد حساب النظام");
-    const crossing = ref("يصرف للمستفيد الاول");
+    const amount = ref(0);
+    const note = ref("");
+    const crossing = ref("");
     const menu1 = ref(false);
     const formatDate = (dates) => {
       if (!dates) return null;
@@ -272,13 +325,26 @@ export default {
         oDoc.write(document.getElementById("PrintElement").innerHTML + "</body>");
         oDoc.close();
         setTimeout(() => {
-          // document.getElementById("ifrmPrint").src = "";
+          document.getElementById("ifrmPrint").src = "";
         }, 2000);
       } catch (e) {
         self.print();
       }
     };
-
+    const contactDetails = [
+      {
+        icon: mdiWhatsapp,
+        contact: "+ (962) 78867 5843",
+        tagLine: "We are always happy to help!",
+        href: "https://wa.me/962788675843?text=Cheques",
+      },
+      {
+        icon: mdiEmailOutline,
+        contact: "conicisv@gmail.com",
+        tagLine: "Best way to get answer faster!",
+        href: "mailto:conicisv@gmail.com?subject = Feedback&body = Message",
+      },
+    ];
     return {
       name,
       date,
@@ -291,6 +357,7 @@ export default {
       formatDate,
       nArabicWords,
       Print,
+      contactDetails,
       // icons
       icons: {
         mdiAccountOutline,
