@@ -11,6 +11,9 @@ export default {
     themes: {
       ...themeConfig.themes,
     },
+    language: {
+      ...themeConfig.language,
+    },
     dark:
       localStorage.getItem('materio-active-theme') === null
         ? themeConfig.app.isDark

@@ -1,7 +1,7 @@
 <template>
   <section id="faq">
     <v-row>
-      <v-col cols="3" md="3" sm="12" xl="3">
+      <v-col cols="12" md="3" xl="3" lg="3" sm="12" xs="12">
         <v-card class="mb-6">
           <v-card-title>{{ $t("Form") }}</v-card-title>
           <v-card-text>
@@ -79,7 +79,7 @@
               ></v-combobox> </v-form
           ></v-card-text> </v-card
       ></v-col>
-      <v-col cols="9" md="9" sm="12" xl="9">
+      <v-col cols="12" md="9" xl="9" lg="9" sm="12" xs="12">
         <v-card class="mb-6">
           <v-card-title>
             <span class="me-3">{{ $t("Layout") }} 🚀</span>
@@ -117,7 +117,7 @@
                     #{{ amount > 0 ? parseInt(amount) : "" }}#
                   </p>
                   <p
-                    class="On_Cheque tafk_lbl"
+                    class="On_Cheque nWords"
                     style="
                       top: 3.1cm;
                       left: 2.1cm;
@@ -135,7 +135,7 @@
                     {{ note }}
                   </p>
                   <p
-                    class="On_Cheque crossing_lbl_horizontal"
+                    class="On_Cheque crossing_horizontal"
                     draggable="false"
                     style="display: block"
                   >
@@ -188,7 +188,7 @@
           </v-avatar>
 
           <p class="text-xl text--primary font-weight-medium mb-2">
-            {{ contact.contact }}
+            <a :href="contact.href" target="_blank"> {{ contact.contact }}</a>
           </p>
 
           <p class="text-sm mb-0">
@@ -231,7 +231,6 @@ export default {
     const formatDate = (dates) => {
       if (!dates) return null;
       const [year, month, day] = dates.split("-");
-
       return `${day}/${month}/${year}`;
     };
     const parseDate = (dates) => {
@@ -245,6 +244,7 @@ export default {
     const Print = () => {
       try {
         // cheque_div
+        document.getElementById("ifrmPrint").src = "";
         var oIframe = document.getElementById("ifrmPrint");
         var oDoc = oIframe.contentWindow || oIframe.contentDocument;
         if (oDoc.document) oDoc = oDoc.document;
@@ -285,7 +285,7 @@ export default {
   -ms-user-select: none;\
   user-select: none;\
 }\
-.sign_name_lbl {\
+.sign_name {\
   width: 170px;\
   text-align: center;\
   background-color: transparent;\
@@ -294,7 +294,7 @@ export default {
   font-family: sans-serif;\
   overflow-x: hidden;\
 }\
-.crossing_lbl_horizontal {\
+.crossing_horizontal {\
   position: absolute;\
   width: 140px;\
   font-size: 13px;\
@@ -310,7 +310,7 @@ export default {
   left: 6.4cm;\
   transform: rotate(0deg);\
 }\
-.tafk_lbl {\
+.nWords {\
   font-size: 15px;\
   text-transform:\ capitalize;\
   margin-top: 15px;\
@@ -325,7 +325,7 @@ export default {
         oDoc.write(document.getElementById("PrintElement").innerHTML + "</body>");
         oDoc.close();
         setTimeout(() => {
-          document.getElementById("ifrmPrint").src = "";
+          //  document.getElementById("ifrmPrint").src = "";
         }, 2000);
       } catch (e) {
         self.print();
@@ -389,7 +389,7 @@ export default {
   -ms-user-select: none;
   user-select: none;
 }
-.sign_name_lbl {
+.sign_name {
   width: 170px;
   text-align: center;
   background-color: transparent;
@@ -398,7 +398,7 @@ export default {
   font-family: sans-serif;
   overflow-x: hidden;
 }
-.crossing_lbl_horizontal {
+.crossing_horizontal {
   position: absolute;
   width: 140px;
   font-size: 13px;
@@ -414,7 +414,7 @@ export default {
   left: 6.4cm;
   transform: rotate(0deg);
 }
-.tafk_lbl {
+.nWords {
   font-size: 15px;
   text-transform: capitalize;
   margin-top: 15px;

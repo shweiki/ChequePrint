@@ -6,6 +6,7 @@ const themeConfig = {
     logo: require('@/assets/images/svg/logo.svg'),
     isDark: false,
     isRtl: false,
+    language: 'ar',
     contentLayoutNav: 'horizontal', // vertical, horizontal
     routeTransition: 'scroll-x-transition', // https://vuetifyjs.com/en/styles/transitions/#api
     // ! `semi-dark` isn't available for horizontal nav menu

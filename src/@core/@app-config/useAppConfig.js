@@ -76,7 +76,13 @@ export default function useAppConfig() {
       localStorage.setItem('materio-active-theme', value ? 'dark' : 'light')
     },
   })
-
+  const language = computed({
+    get: () => $vuetify.theme.dark,
+    set: value => {
+      $vuetify.theme.dark = value
+      localStorage.setItem('active-language', value)
+    },
+  })
   const isRtl = computed({
     get: () => $vuetify.rtl,
     set: value => {

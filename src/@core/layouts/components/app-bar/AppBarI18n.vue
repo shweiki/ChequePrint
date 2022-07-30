@@ -50,7 +50,7 @@ import useAppConfig from "@core/@app-config/useAppConfig";
 
 export default {
   setup() {
-    const { isRtl } = useAppConfig();
+    const { isRtl, language } = useAppConfig();
 
     const locales = [
       {
@@ -68,7 +68,7 @@ export default {
     const updateActiveLocale = (locale) => {
       // Set to RTL mode if locale is arabic
       isRtl.value = locale === "ar";
-
+      language = locale;
       loadLanguageAsync(locale);
     };
 
